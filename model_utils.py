@@ -46,7 +46,7 @@ class TaskPrefixTrainer(Seq2SeqTrainer):
         self.output_rationale = output_rationale
 
 
-    def compute_loss(self, model, inputs, return_outputs=False):
+    def compute_loss(self, model, inputs, num_items_in_batch=None, return_outputs=False):
         pred_outputs = model(**inputs['pred'])
         expl_outputs = model(**inputs['expl'])
 
