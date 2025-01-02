@@ -24,6 +24,8 @@ from transformers.trainer_utils import set_seed
 
 from model_utils import TaskPrefixDataCollator, TaskPrefixTrainer
 
+print("Hello world!!")
+
 
 def get_config_dir(args):
     return f'{args.dataset}/{args.from_pretrained.split("/")[1]}/{args.model_type}/{args.llm}/{args.subsample}/{args.label_type}/{args.alpha}/{args.max_input_length}/{args.grad_steps*args.batch_size}/{args.optimizer_name}/{args.lr}'
@@ -73,6 +75,7 @@ def train_and_evaluate(args, run, tokenizer, tokenized_datasets, compute_metrics
         bf16=args.bf16,
         generation_max_length=args.gen_max_len,
         prediction_loss_only=False,
+        report_to="none",
     )
 
     if args.model_type == 'task_prefix':
@@ -91,7 +94,7 @@ def train_and_evaluate(args, run, tokenizer, tokenized_datasets, compute_metrics
         'train_dataset': tokenized_datasets["train"],
         'eval_dataset': {'test': tokenized_datasets["test"],},
         'data_collator': data_collator,
-        'tokenizer': tokenizer,
+        'processing_class': tokenizer,
         'compute_metrics': compute_metrics,
     }
     
